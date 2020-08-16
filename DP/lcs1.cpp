@@ -70,6 +70,7 @@ int main()
             }   
         }
     }
+    cout << dp[n][m] << '\n'; //the length of the lcs
     build_lcs(d, n, m);
     //The LCS of a and b is:
     for (auto& i : d) cout << i << ' ';
