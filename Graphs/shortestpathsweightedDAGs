@@ -1,0 +1,87 @@
+#include <bits/stdc++.h>
+using namespace std;
+const int INF = 1000000000;
+
+vector<vector<pair<int, int>>> grh;
+vector<bool> visited;
+vector<int> ordered_vertices;
+vector<int> d;
+vector<int> parent;
+
+bool directed = true;
+
+void dfs(int u)
+{
+    visited[u] = true;
+    for (auto [v, w] : grh[u])
+    {
+        if (visited[v]) continue;
+        dfs(v);
+    }
+    ordered_vertices.push_back(u);
+}
+
+void topological_sort(int n)
+{
+    for (int i = 0; i < n; i++)
+    {
+        if (visited[i]) continue;
+        dfs(i);
+    }
+    reverse(ordered_vertices.begin(), ordered_vertices.end());
+}
+
+void relax(int u, int v, int w)
+{
+    //relax the edge u->v
+    if (d[v] > d[u] + w)
+    {
+        d[v] = d[u] + w;
+        parent[v] = u;
+    }
+}
+
+int main()
+{
+    int n, m;
+    cin >> n >> m;
+    grh.resize(n);
+    visited.resize(n);
+    for (int i = 0; i < m; i++)
+    {
+        int u, v, w;
+        cin >> u >> v >> w;
+        grh[u].push_back({v, w});
+        //directed = false; //if I come to know that my graph is undirected I can remove the comment of this line 
+        if (!directed)
+        {
+            grh[v].push_back({u, w});
+        }
+    }
+    topological_sort(n);
+    d.resize(n, INF);
+    parent.resize(n, -1); //initially all the predecessor values are set to -1
+    int source;
+    cin >> source;
+    d[source] = 0;
+
+    //find the position of source in the ordered_vertices array
+    auto it = find(ordered_vertices.begin(), ordered_vertices.end(), source);
+    int source_pos = it - ordered_vertices.begin();
+    for (int i = source_pos; i < n; i++)
+    {
+        //relax the edges emanating from i
+        int u = ordered_vertices[i]; //vertex at pos i in the ordered_vertices array
+        for (auto& [v, w] : grh[u])
+        {
+            relax(u, v, w);
+        }
+    }
+
+    //the delta values(i.e. sp distances) and the respected parent pointers are as follows:-
+    for (int i = 0; i < n; i++)
+    {
+        cout << "Vertex " << i << ": delta(" << source << ", " << i << ") = " << d[i] << "     ";
+        cout << "pi(" << i << ") = " << parent[i] << '\n';
+    }
+}
