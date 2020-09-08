@@ -1,6 +1,6 @@
 /**
  *    author: pradnesh
- *    created: 17.08.2020 22:56:23
+ *    created: 08.09.2020 16:38:00
 **/
 
 #include <bits/stdc++.h>
@@ -46,9 +46,8 @@ const ll mod2 = 1000000007; //10^9 + 7
 #define yes cout << "YES\n"
 #define no cout<< "NO\n"
 #define google(x, y) cout << "Case #" << x << ": " << y << '\n' //use in google competitions
-#define clk_start auto start = steady_clock::now()
-#define clk_finish auto finish = steady_clock::now()
-#define clk_dur duration_cast<milliseconds>(finish - start).count()
+#define input cerr << "Input: \n"
+#define output cerr << "=========================================================================\n";
 
 template<typename T>
 ostream& operator<<(ostream& stream, const vector<T>& vec) //output vectors
@@ -436,20 +435,81 @@ void radix_sort(vector<ll>& arr)
 	}
 }
 
+//========================Debug======================================
+ 
+void __print(int x) { cerr << x; }
+void __print(long x) { cerr << x; }
+void __print(long long x) { cerr << x; }
+void __print(unsigned x) { cerr << x; }
+void __print(unsigned long x) { cerr << x; }
+void __print(unsigned long long x) { cerr << x; }
+void __print(float x) { cerr << x; }
+void __print(double x) { cerr << x; }
+void __print(long double x) { cerr << x; }
+void __print(char x) { cerr << '\'' << x << '\''; }
+void __print(const char *x) { cerr << '\"' << x << '\"'; }
+void __print(const string &x) { cerr << '\"' << x << '\"'; }
+void __print(bool x) { cerr << (x ? "true" : "false"); }
+ 
+template <typename T, typename V>
+void __print(const pair<T, V> &x)
+{
+    cerr << '{';
+    __print(x.first);
+    cerr << ',';
+    __print(x.second);
+    cerr << '}';
+}
+template <typename T>
+void __print(const T &x)
+{
+    int f = 0;
+    cerr << '{';
+    for (auto &i : x)
+        cerr << (f++ ? "," : ""), __print(i);
+    cerr << "}";
+}
+void _print() { cerr << "]\n"; }
+template <typename T, typename... V>
+void _print(T t, V... v)
+{
+    __print(t);
+    if (sizeof...(v))
+        cerr << ", ";
+    _print(v...);
+}
+
+#define debug(x...)               \
+    cerr << "[" << #x << "] = ["; \
+    _print(x)
+
+//==================================================================
+
+auto clk = clock();
+mt19937_64 rang(chrono::high_resolution_clock::now().time_since_epoch().count());
+void run_time()
+{
+    cerr << "Time elapsed: " << (double)(clock() - clk) / CLOCKS_PER_SEC << '\n';
+}
+
 ll tc = 1;
 void solve();
 
 int main()
 {
-	ios::sync_with_stdio(0);
-	cin.tie(0);
-	ll t = 1;
-	cin >> t;
-	//clk_start;
-	for (tc = 1; tc <= t; tc++) solve();
-	//clk_finish;
-	//cout << clk_dur << '\n';
-	return 0;
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
+    output;
+    input;
+    ll t = 1;
+    cin >> t;
+    for (tc = 1; tc <= t; tc++){
+        solve();
+    }
+    output;
+    run_time();
+    return 0;
 }
 
 ml grh; //graph
@@ -457,5 +517,5 @@ vb visited; //for dfs
 
 void solve()
 {
-
+    output;
 }
