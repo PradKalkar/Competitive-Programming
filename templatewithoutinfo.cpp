@@ -23,9 +23,9 @@ typedef vector<pll> vpll;
 template<class key_type, class cont = vl, class comp = less<key_type>>
 using p_queue = priority_queue<key_type, cont, comp>;
 template<class key_type, class comp = less<key_type>>
-using my_set = tree<key_type, null_type, comp, rb_tree_tag, tree_order_statistics_node_update>;
+using oset = tree<key_type, null_type, comp, rb_tree_tag, tree_order_statistics_node_update>;
 template<class key_type, class value_type, class comp = less<key_type>>
-using my_map = tree<key_type, value_type, comp, rb_tree_tag, tree_order_statistics_node_update>;
+using omap = tree<key_type, value_type, comp, rb_tree_tag, tree_order_statistics_node_update>;
 
 const long double PI = 2 * acos(0.0);
 const ll INF = (ll)9e18;
@@ -46,8 +46,6 @@ const ll mod2 = 1000000007; //10^9 + 7
 #define yes cout << "YES\n"
 #define no cout<< "NO\n"
 #define google(x, y) cout << "Case #" << x << ": " << y << '\n'
-#define input cerr << "Input: \n"
-#define output cerr << "=========================================================================\n";
 
 template<typename T>
 ostream& operator<<(ostream& stream, const vector<T>& vec)
@@ -132,10 +130,12 @@ typedef matrix<pll> mpll;
 //all function prototypes
 ll ilog(ll n, ll base);
 ll power(ll, ll);
-void InverseofNumbers(ll, ll);
+
+void InverseofNumbers(ll, ll); //separating out to a group
 void InverseofFactorial(ll, ll);
 void factorialmod(ll, ll);
 ll ncrmod(ll n, ll r, ll p);
+
 ll ncr(ll n, ll r);
 tuple<ll, ll, ll> euclid(ll a, ll b);
 ll modInverse(ll n, ll p);
@@ -197,108 +197,17 @@ ll power(ll x, ll y)
     return res;
 }
 
-vl numinverse;
-void InverseofNumbers(ll n, ll p) //p is prime
-{
-    numinverse.resize(n + 1);
-    numinverse[0] = numinverse[1] = 1;
-    for (ll i = 2; i <= n; i++)
-        numinverse[i] = numinverse[p % i] * (p - p / i) % p;
-}
-
-vl factorial_inverse;
-void InverseofFactorial(ll n, ll p)
-{
-    factorial_inverse.resize(n + 1);
-    factorial_inverse[0] = factorial_inverse[1] = 1;
-    for (int i = 2; i <= n; i++)
-        factorial_inverse[i] = (numinverse[i] * factorial_inverse[i - 1]) % p;
-}
-
-vl fact;
-//fact[i] = factorial(i) % p //O(n)
-void factorialmod(ll n, ll p)
-{
-    fact.resize(n + 1);
-    ll ans = 1;
-    rep(i, 0, n+1, 1)
-    {
-        fact[i] = ans;
-        ans = (ans * (i + 1)) % p;
-    }
-}
-
-ll ncrmod(ll n, ll r, ll p)
-{
-    ll ans = ((fact[n] * factorial_inverse[r])
-              % p * factorial_inverse[n - r])
-             % p;
-    return ans;
-}
-
-ll ncr(ll n, ll r)
-{
-    if (n < r)
-        return 0;
-    ll res = 1;
-    if (r > n - r)
-        r = n - r;
-    rep(i, 0, r, 1)
-    {
-        res *= (n - i);
-        res /= (i + 1);
-    }
-    return res;
-}
-
-tuple<ll, ll, ll> euclid(ll a, ll b)
-{
-    ll d1, x1, y1;
-    if (b == 0)
-        return { a, 1, 0 };
-    else
-    {
-        tie(d1, x1, y1) = euclid(b, a % b);
-    }
-    ll d = d1, x = y1, y = x1 - a / b * y1;
-    return { d, x, y };
-}
-
 ll modInverse(ll n, ll p)
 {
-    return power_mod(n, p - 2, p);
-}
-
-ll phi(ll n) {
-    ll result = n;
-    for (ll i = 2; i * i <= n; i++) {
-        if (n % i == 0) {
-            while (n % i == 0)
-                n /= i;
-            result -= result / i;
-        }
-    }
-    if (n > 1)
-        result -= result / n;
-    return result;
-}
-
-bool checkprime(ll p)
-{
-    if (p <= 1) return false;
-    bool ans = true;
-    for (ll i = 2; i * i <= p; i++)
+    if (p == mod1 || p == mod2)
     {
-        if (p % i) continue;
-        ans = false;
-        break;
+        return power_mod(n, p-2, p);
     }
-    return ans;
+    //return power_mod(n, phi(p) - 1, p); when p is not prime
 }
 
 ll power_mod(ll x, ll y, ll p)
 {
-    if (checkprime(p)) y %= (p - 1);
     ll res = 1;
     x = x % p;
     while (y > 0)
@@ -309,129 +218,6 @@ ll power_mod(ll x, ll y, ll p)
         x = (x * x) % p;
     }
     return res;
-}
-
-vector<bool> is_prime;
-vector<ll> primes;
-void prime_generator(ll n)
-{
-    is_prime = vector<bool>(n + 1, false);
-    vector<bool> a(n + 1, true);
-    for (ll i = 2; i * i <= n; i++)
-    {
-        if (a[i])
-        {
-            for (ll j = i * i; j <= n; j += i)
-            {
-                a[j] = false;
-            }
-        }
-    }
-    for (ll i = 2; i <= n; i++)
-    {
-        if (a[i])
-        {
-            is_prime[i] = true;
-            primes.pub(a[i]);
-        }
-    }
-}
-
-vector<ll> spf;
-void sieve(ll n)
-{
-    spf = vl(n + 1);
-    spf[1] = 1;
-    for (ll i = 2; i <= n; i++)
-        spf[i] = i;
-    for (ll i = 4; i <= n; i += 2)
-        spf[i] = 2;
-
-    for (ll i = 3; i * i <= n; i++)
-    {
-        if (spf[i] == i)
-        {
-            for (ll j = i * i; j <= n; j += i)
-                if (spf[j] == j)
-                    spf[j] = i;
-        }
-    }
-}
-
-vector<ll> getFactorization(ll x)
-{
-    vector<ll> ret;
-    while (x != 1)
-    {
-        ret.push_back(spf[x]);
-        x = x / spf[x];
-    }
-    return ret;
-}
-
-vector<ll> getfactors(ll x)
-{
-    vl ans, ans1;
-    for (ll i = 1; i * i <= x; i++)
-    {
-        if (x % i == 0)
-        {
-            ans.push_back(i);
-            if (i * i != x)
-                ans1.push_back(x / i);
-        }
-    }
-    ans.insert(end(ans), rbegin(ans1), rend(ans1));
-    return ans;
-}
-
-vl subset;
-void naive_subset_search(ll k, vl& arr)
-{
-    if (k == sz(arr))
-    {
-        //Process subset
-        //for eg we can do cout << subset
-    }
-    else
-    {
-        naive_subset_search(k + 1, arr);
-        subset.pub(arr[k]);
-        naive_subset_search(k + 1, arr);
-        subset.pob();
-    }
-}
-
-void radix_sort(vector<ll>& arr)
-{
-    ll d = 0;
-    for (const auto& i : arr)
-    {
-        d = max(d, ilog(i, 10) + 1);
-    }
-    ll n = arr.size();
-    vector<queue<ll> > digits(10);
-    ll prod = 10;
-    vector<ll> tmp = arr;
-    while (d--)
-    {
-        for (ll i = 0; i < n; i++)
-        {
-            digits[tmp[i] % 10].push(arr[i]);
-        }
-        ll index = 0;
-        for (ll i = 0; i < 10; i++)
-        {
-            while (!digits[i].empty())
-            {
-                arr[index] = digits[i].front();
-                tmp[index] = arr[index] / prod;
-                digits[i].pop();
-                index++;
-            }
-        }
-        prod *= 10;
-    }
 }
 
 //========================Debug======================================
@@ -478,18 +264,31 @@ void _print(T t, V... v)
     _print(v...);
 }
 
-#define debug(x...)               \
-    cerr << "[" << #x << "] = ["; \
-    _print(x)
+ll total_time = 0;
+
+#ifdef local
+    #define debug(x...)               \
+        cerr << "[" << #x << "] = ["; \
+        _print(x)
+    #define input cerr << "===================\nInput: \n"
+    #define output cerr << "Output: \n"; clk1
+    #define spacing cerr << "===================\n"
+    #define clk1 auto start = steady_clock::now()
+    #define clk2 auto finish = steady_clock::now(); total_time += duration_cast<milliseconds>(finish - start).count(); clkdur
+    #define clk3 cerr << "\nTotal time elapsed: " << total_time << '\n'
+    #define clkdur cerr << "\nTime elapsed: " << duration_cast<milliseconds>(finish - start).count() << '\n'
+#else
+    #define debug(x...)
+    #define input
+    #define output
+    #define spacing
+    #define clk1
+    #define clk2
+    #define clk3
+    #define clkdur
+#endif
 
 //==================================================================
-
-auto clk = clock();
-mt19937_64 rang(chrono::high_resolution_clock::now().time_since_epoch().count());
-void run_time()
-{
-    cerr << "Time elapsed: " << (double)(clock() - clk) / CLOCKS_PER_SEC << '\n';
-}
 
 ll tc = 1;
 void solve();
@@ -499,15 +298,14 @@ int main()
     ios::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
-    output;
-    input;
+    spacing;
     ll t = 1;
     cin >> t;
     for (tc = 1; tc <= t; tc++){
         solve();
     }
-    output;
-    run_time();
+    spacing;
+    clk3;
     return 0;
 }
 
@@ -516,5 +314,7 @@ vb visited;
 
 void solve()
 {
+    input;
     output;
+    clk2;
 }
