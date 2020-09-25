@@ -1,13 +1,11 @@
-template <unsigned int MOD>
+template <ll MOD>
 struct ModInt {
-    using uint = unsigned int;
-    using ull = unsigned long long;
     using M = ModInt;
 
-    uint v;
+    ll v;
 
     ModInt(ll _v = 0) { set_norm(_v % MOD + MOD); }
-    M& set_norm(uint _v) {  //[0, MOD * 2)->[0, MOD)
+    M& set_norm(ll _v) {  //[0, MOD * 2)->[0, MOD)
         v = (_v < MOD) ? _v : _v - MOD;
         return *this;
     }
@@ -15,7 +13,7 @@ struct ModInt {
     explicit operator bool() const { return v != 0; }
     M operator+(const M& a) const { return M().set_norm(v + a.v); }
     M operator-(const M& a) const { return M().set_norm(v + MOD - a.v); }
-    M operator*(const M& a) const { return M().set_norm(ull(v) * a.v % MOD); }
+    M operator*(const M& a) const { return M().set_norm(v * a.v % MOD); }
     M operator/(const M& a) const { return *this * a.inv(); }
     M& operator+=(const M& a) { return *this = *this + a; }
     M& operator-=(const M& a) { return *this = *this - a; }
@@ -49,6 +47,20 @@ struct ModInt {
     bool operator==(const M& a) const { return v == a.v; }
     bool operator!=(const M& a) const { return v != a.v; }
     friend ostream& operator<<(ostream& os, const M& a) { return os << a.v; }
-    static uint get_mod() { return MOD; }
+    static ll get_mod() { return MOD; }
 };
 using Mint = ModInt<998244353>;
+
+vector<Mint> fact(1LL, 1LL);
+vector<Mint> inv_fact(1LL, 1LL);
+
+Mint C(ll n, ll k) { //O(n) time
+    if (k < 0 || k > n) {
+        return 0;
+    }
+    while (sz(fact) < n + 1) {
+        fact.push_back(fact.back() * sz(fact));
+        inv_fact.push_back((Mint)1LL / fact.back());
+    }
+    return fact[n] * inv_fact[k] * inv_fact[n - k];
+}
