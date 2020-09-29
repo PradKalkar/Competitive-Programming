@@ -1,6 +1,6 @@
 /**
  *    author: pradnesh
- *    created: 08.09.2020 16:38:00
+ *    created: 29.09.2020 18:35:00
 **/
 
 #include <bits/stdc++.h>
@@ -9,18 +9,17 @@
 using namespace __gnu_pbds;
 using namespace std;
 using namespace std::chrono;
+#define int ll
 
 typedef long double ld;
 typedef long long ll;
 typedef uint64_t ull;
 typedef vector<int> vi;
-typedef vector<ll> vl;
 typedef vector<bool> vb;
-typedef set<ll> sl;
+typedef set<int> si;
 typedef pair<int, int> pii;
-typedef pair<ll, ll> pll;
-typedef vector<pll> vpll;
-template<class key_type, class cont = vl, class comp = less<key_type>>
+typedef vector<pii> vpii;
+template<class key_type, class cont = vi, class comp = less<key_type>>
 using p_queue = priority_queue<key_type, cont, comp>;
 template<class key_type, class comp = less<key_type>>
 using oset = tree<key_type, null_type, comp, rb_tree_tag, tree_order_statistics_node_update>;
@@ -28,20 +27,13 @@ template<class key_type, class value_type, class comp = less<key_type>>
 using omap = tree<key_type, value_type, comp, rb_tree_tag, tree_order_statistics_node_update>;
 
 const long double PI = 2 * acos(0.0);
-const ll INF = (ll)9e18;
-const ll mod1 = 998244353;
-const ll mod2 = 1000000007; //10^9 + 7
-#define sz(v) ll((v).size())
+const int INF = (ll)9e18;
+const int mod1 = 998244353;
+const int mod2 = 1000000007; //10^9 + 7
+#define sz(v) int((v).size())
 #define all(v) v.begin(), v.end()
 #define rall(v) v.rbegin(), v.rend()
-#define eb emplace_back
-#define pub push_back
-#define pob pop_back
-#define puf push_front
-#define pof pop_front
-#define mp make_pair
-#define mt make_tuple
-#define rep(var,start,end,interval) for(ll var=start;(interval>0 and var<end) or (interval<0 and var>=end);var+=interval)
+#define rep(var,start,end,interval) for(int var=start;(interval>0 and var<end) or (interval<0 and var>=end);var+=interval)
 #define nl cout << '\n'
 #define yes cout << "YES\n"
 #define no cout<< "NO\n"
@@ -50,8 +42,8 @@ const ll mod2 = 1000000007; //10^9 + 7
 template<typename T>
 ostream& operator<<(ostream& stream, const vector<T>& vec)
 {
-    ll n = vec.size();
-    for (ll i = 0; i < n; i++)
+    int n = vec.size();
+    for (int i = 0; i < n; i++)
     {
         stream << vec[i] << ' ';
     }
@@ -62,15 +54,15 @@ ostream& operator<<(ostream& stream, const vector<T>& vec)
 template<class T>
 istream& operator>>(istream& stream, vector<T>& vec)
 {
-    ll n = vec.size();
-    for (ll j = 0; j < n; j++)
+    int n = vec.size();
+    for (int j = 0; j < n; j++)
     {
         stream >> vec[j];
     }
     return stream;
 }
 
-istream& operator>>(istream& stream, pll& p)
+istream& operator>>(istream& stream, pii& p)
 {
     stream >> p.first >> p.second;
     return stream;
@@ -83,71 +75,29 @@ string operator+(const char& c, const string& str)
     return ans;
 }
 
-template<class T>
-class matrix
-{
-public:
-    matrix(){}
-    matrix(ll rows)
-    {
-        arr = vector<vector<T> >(rows);
-    }
-    matrix(ll rows, ll cols)
-    {
-        arr = vector<vector<T> >(rows, vector<T>(cols));
-    }
-    matrix(ll rows, ll cols, T val)
-    {
-        arr = vector<vector<T> >(rows, vector<T>(cols, val));
-    }
-    void out()
-    {
-        for (auto& i : arr)
-        {
-            cout << i;
-        }
-    }
-    void in()
-    {
-        for (auto& i : arr)
-        {
-            cin >> i;
-        }
-    }
-    vector<T>& operator[](ll row)
-    {
-        vector<T>& tmp = arr[row];
-        return tmp;
-    }
-    ll n, m;
-    vector<vector<T> > arr;
-};
-typedef matrix<ll> ml;
-typedef matrix<bool> mb;
-typedef matrix<ld> mld;
-typedef matrix<pll> mpll;
+//matrix
 
 //all function prototypes
-ll ilog(ll n, ll base);
-ll power(ll, ll);
+int ilog(int n, int base);
+int power(int, int);
 
-void InverseofNumbers(ll, ll); //separating out to a group
-void InverseofFactorial(ll, ll);
-void factorialmod(ll, ll);
-ll ncrmod(ll n, ll r, ll p);
+void InverseofNumbers(int, int); //separating out to a group
+void InverseofFactorial(int, int);
+void factorialmod(int, int);
+int ncrmod(int n, int r, int p);
 
-ll ncr(ll n, ll r);
-tuple<ll, ll, ll> euclid(ll a, ll b);
-ll modInverse(ll n, ll p);
-ll phi(ll n);
-bool checkprime(ll p);
-ll power_mod(ll x, ll y, ll p);
-void prime_generator(ll n);
-void sieve(ll n);
-vector<ll> getFactorization(ll x);
-vector<ll> getfactors(ll x);
-void naive_subset_search(ll k, vl& arr);
-void radix_sort(vector<ll>& arr);
+int ncr(int n, int r);
+tuple<int, int, int> euclid(int a, int b);
+int modInverse(int n, int p);
+int phi(int n);
+bool checkprime(int p);
+int power_mod(int x, int y, int p);
+void prime_generator(int n);
+void sieve(int n);
+vector<int> getFactorization(int x);
+vector<int> getfactors(int x);
+void naive_subset_search(int k, vector<int>& arr);
+void radix_sort(vector<int>& arr);
 
 //some templates
 void out(){cout << '\n';return;}
@@ -158,21 +108,12 @@ void in(){return;}
 template<typename T, typename... Args>
 void in(T& a, Args&... args) {cin >> a; in(args...);}
 
-template<typename T>
-T max1(T a, T b){return max(a, b);}
-template<typename T, typename... Args>
-T max1(T a, Args... args) {return max(a, max1(args...));}
-
-template<typename T>
-T min1(T a, T b){return min(a, b);}
-template<typename T, typename... Args>
-T min1(T a, Args... args) {return min(a, min1(args...));}
-
 //all function definitions
-ll ilog(ll n, ll base)
+int ilog(int n, int base)
 {
-    ll prod = base;
-    ll p = 0;
+    assert(n > 0);
+    int prod = base;
+    int p = 0;
     while (1)
     {
         if (n < prod)
@@ -184,9 +125,9 @@ ll ilog(ll n, ll base)
     }
 }
 
-ll power(ll x, ll y)
+int power(int x, int y)
 {
-    ll res = 1;
+    int res = 1;
     while (y > 0)
     {
         if (y & 1)
@@ -197,32 +138,9 @@ ll power(ll x, ll y)
     return res;
 }
 
-ll modInverse(ll n, ll p)
-{
-    if (p == mod1 || p == mod2)
-    {
-        return power_mod(n, p-2, p);
-    }
-    //return power_mod(n, phi(p) - 1, p); when p is not prime
-}
-
-ll power_mod(ll x, ll y, ll p)
-{
-    ll res = 1;
-    x = x % p;
-    while (y > 0)
-    {
-        if (y & 1)
-            res = (res * x) % p;
-        y = y >> 1;
-        x = (x * x) % p;
-    }
-    return res;
-}
-
 //========================Debug======================================
  
-void __print(int x) { cerr << x; }
+//void __print(int x) { cerr << x; }
 void __print(long x) { cerr << x; }
 void __print(long long x) { cerr << x; }
 void __print(unsigned x) { cerr << x; }
@@ -235,6 +153,9 @@ void __print(char x) { cerr << '\'' << x << '\''; }
 void __print(const char *x) { cerr << '\"' << x << '\"'; }
 void __print(const string &x) { cerr << '\"' << x << '\"'; }
 void __print(bool x) { cerr << (x ? "true" : "false"); }
+
+//template<int mod>
+//void __print(const modint<mod>& x) {cerr << x.v;}
  
 template <typename T, typename V>
 void __print(const pair<T, V> &x)
@@ -264,7 +185,7 @@ void _print(T t, V... v)
     _print(v...);
 }
 
-ll total_time = 0;
+int total_time = 0;
 
 #ifdef local
     #define debug(x...)               \
@@ -290,16 +211,16 @@ ll total_time = 0;
 
 //==================================================================
 
-ll tc = 1;
+int tc = 1;
 void solve();
 
-int main()
+signed main()
 {
     ios::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
     spacing;
-    ll t = 1;
+    int t = 1;
     cin >> t;
     for (tc = 1; tc <= t; tc++){
         solve();
@@ -309,12 +230,10 @@ int main()
     return 0;
 }
 
-ml grh;
-vb visited;
+//ml grh;
+//vb visited;
 
 void solve()
 {
-    input;
-    output;
-    clk2;
+
 }
