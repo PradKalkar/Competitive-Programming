@@ -77,6 +77,8 @@ string operator+(const char& c, const string& str)
 
 //matrix
 
+//modint 
+
 //all function prototypes
 int ilog(int n, int base);
 int power(int, int);
