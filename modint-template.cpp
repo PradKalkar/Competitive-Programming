@@ -1,11 +1,12 @@
-template <ll MOD>
+//modint class
+template <int MOD>
 struct modint {
     using M = modint;
 
-    ll v;
+    int v;
 
-    modint(ll _v = 0) { set_norm(_v % MOD + MOD); }
-    M& set_norm(ll _v) {  //[0, MOD * 2)->[0, MOD)
+    modint(int _v = 0) { set_norm(_v % MOD + MOD); }
+    M& set_norm(int _v) {  //[0, MOD * 2)->[0, MOD)
         v = (_v < MOD) ? _v : _v - MOD;
         return *this;
     }
@@ -23,7 +24,7 @@ struct modint {
     M& operator++(int) { return *this = *this + 1; }
     M& operator--(int) { return *this = *this - 1; }
 
-    M pow(ll n) const {
+    M pow(int n) const {
         if (n < 0) return inv().pow(-n);
         M x = *this, res = 1;
         while (n) {
@@ -34,8 +35,8 @@ struct modint {
         return res;
     }
 
-    M inv() const {
-        ll a = v, b = MOD, p = 1, q = 0, t;
+    M inv() const { 
+        int a = v, b = MOD, p = 1, q = 0, t;
         while (b != 0) {
             t = a / b;
             swap(a -= t * b, b);
@@ -48,21 +49,21 @@ struct modint {
     bool operator!=(const M& a) const { return v != a.v; }
     friend ostream& operator<<(ostream& os, const M& a) { return os << a.v; }
     friend istream& operator>>(istream& is, M& a){
-        ll tmp;
+        int tmp;
         is >> tmp;
         tmp %= MOD;
         if (tmp < 0) tmp += MOD;
         a.v = tmp;
         return is;
     }
-    static ll get_mod() { return MOD; }
+    static int get_mod() { return MOD; }
 };
 using Mint = modint<998244353LL>;
 
 vector<Mint> fact(1LL, 1LL);
 vector<Mint> inv_fact(1LL, 1LL);
 
-Mint C(ll n, ll k) { //O(n) time
+Mint C(int n, int k) { //O(n) time
     if (k < 0 || k > n) {
         return 0;
     }
