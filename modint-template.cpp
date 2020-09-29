@@ -1,10 +1,10 @@
 template <ll MOD>
-struct ModInt {
-    using M = ModInt;
+struct modint {
+    using M = modint;
 
     ll v;
 
-    ModInt(ll _v = 0) { set_norm(_v % MOD + MOD); }
+    modint(ll _v = 0) { set_norm(_v % MOD + MOD); }
     M& set_norm(ll _v) {  //[0, MOD * 2)->[0, MOD)
         v = (_v < MOD) ? _v : _v - MOD;
         return *this;
@@ -47,9 +47,17 @@ struct ModInt {
     bool operator==(const M& a) const { return v == a.v; }
     bool operator!=(const M& a) const { return v != a.v; }
     friend ostream& operator<<(ostream& os, const M& a) { return os << a.v; }
+    friend istream& operator>>(istream& is, M& a){
+        ll tmp;
+        is >> tmp;
+        tmp %= MOD;
+        if (tmp < 0) tmp += MOD;
+        a.v = tmp;
+        return is;
+    }
     static ll get_mod() { return MOD; }
 };
-using Mint = ModInt<998244353>;
+using Mint = modint<998244353LL>;
 
 vector<Mint> fact(1LL, 1LL);
 vector<Mint> inv_fact(1LL, 1LL);
