@@ -3,15 +3,15 @@ class matrix
 {
 public:
     matrix(){}
-    matrix(const ll& rows)
+    matrix(const int& rows)
     {
         arr = vector<vector<T> >(rows);
     }
-    matrix(const ll rows, const ll& cols)
+    matrix(const int& rows, const int& cols)
     {
         arr = vector<vector<T> >(rows, vector<T>(cols));
     }
-    matrix(const ll& rows, const ll& cols, const T& val)
+    matrix(const int& rows, const int& cols, const T& val)
     {
         arr = vector<vector<T> >(rows, vector<T>(cols, val));
     }
@@ -33,15 +33,15 @@ public:
         }
         return is;
     }
-    vector<T>& operator[](const ll& row)
+    vector<T>& operator[](const int& row)
     {
         vector<T>& tmp = arr[row];
         return tmp;
     }
-    ll n, m;
+    int n, m;
     vector<vector<T> > arr;
 };
-typedef matrix<ll> ml;
+typedef matrix<int> mi;
 typedef matrix<bool> mb;
 typedef matrix<ld> mld;
-typedef matrix<pll> mpll;
+typedef matrix<pii> mpii;
