@@ -1,4 +1,3 @@
-//modint class
 template <int MOD>
 struct modint {
     using M = modint;
@@ -11,18 +10,34 @@ struct modint {
         return *this;
     }
 
-    explicit operator bool() const { return v != 0; }
-    M operator+(const M& a) const { return M().set_norm(v + a.v); }
-    M operator-(const M& a) const { return M().set_norm(v + MOD - a.v); }
-    M operator*(const M& a) const { return M().set_norm(v * a.v % MOD); }
-    M operator/(const M& a) const { return *this * a.inv(); }
-    M& operator+=(const M& a) { return *this = *this + a; }
-    M& operator-=(const M& a) { return *this = *this - a; }
-    M& operator*=(const M& a) { return *this = *this * a; }
-    M& operator/=(const M& a) { return *this = *this / a; }
+    explicit operator bool() const {return v != 0;}
+    M operator+(const M& a) const {return M().set_norm(v + a.v);}
+    M operator+(const int& a) const {return M().set_norm(v + a);}
+    M operator-(const M& a) const {return M().set_norm(v + MOD - a.v);}
+    M operator-(const int& a) const {return M().set_norm(v + MOD - a);}
+
+    M operator*(const M& a) const {return M().set_norm(v * a.v % MOD);}
+    M operator*(const int& a) const {return M().set_norm(v * (a % MOD) % MOD);}
+
+    M operator/(const M& a) const {return *this * a.inv();}
+    M operator/(const int& a) const {return *this * M(a).inv();}
+
+    M& operator+=(const M& a) {return *this = *this + a; }
+    M& operator+=(const int& a) {return *this = *this + a;}
+
+    M& operator-=(const M& a) {return *this = *this - a;}
+    M& operator-=(const int& a) {return *this = *this - a;}
+
+    M& operator*=(const M& a) {return *this = *this * a; }
+    M& operator*=(const int& a) {return *this = *this * a; }
+
+    M& operator/=(const M& a) {return *this = *this / a; }
+    M& operator/=(const int& a) {return *this = *this / a; }
+
     M operator-() const { return M() - *this; }
-    M& operator++(int) { return *this = *this + 1; }
-    M& operator--(int) { return *this = *this - 1; }
+
+    M& operator++(signed) { return *this = *this + 1; }
+    M& operator--(signed) { return *this = *this - 1; }
 
     M pow(int n) const {
         if (n < 0) return inv().pow(-n);
@@ -47,6 +62,7 @@ struct modint {
 
     bool operator==(const M& a) const { return v == a.v; }
     bool operator!=(const M& a) const { return v != a.v; }
+
     friend ostream& operator<<(ostream& os, const M& a) { return os << a.v; }
     friend istream& operator>>(istream& is, M& a){
         int tmp;
@@ -56,6 +72,7 @@ struct modint {
         a.v = tmp;
         return is;
     }
+
     static int get_mod() { return MOD; }
 };
 using Mint = modint<998244353LL>;
