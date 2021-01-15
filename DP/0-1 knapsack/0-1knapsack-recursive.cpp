@@ -3,12 +3,10 @@ using namespace std;
 
 int calc(vector<int>& wt, vector<int>& val, int n, int W){
     if (n == 0 || W == 0) return 0;
-    if (W < wt[n-1]){
-        return calc(wt, val, n-1, W);
-    }
-    else{
-        return max(calc(wt, val, n-1, W), val[n-1] + calc(wt, val, n-1, W - wt[n-1]));
-    }
+    int ans = calc(wt, val, n-1, W); //not selecting the last item
+    if (W >= wt[n-1]) 
+        ans = max(ans, val[n-1] + calc(wt, val, n-1, W - wt[n-1])); //selecting the last item
+    return ans;
 }
 
 int main(){
