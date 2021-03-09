@@ -375,23 +375,19 @@ void prime_generator(ll n) //generates all prime numbers till n using Sieve of E
     }
 }
 
-vector<ll> spf; //the below function generates the smallest prime factor for all numbers from 1 to n(O(nloglogn))
-void sieve(ll n) //using Sieve of Erastothenes.
-{
-    spf = vl(n + 1);
-    spf[1] = 1;
-    for (ll i = 2; i <= n; i++)
+vector<ll> spf; //the below function generates the smallest prime factor for all numbers from 1 to n(O(nloglogn)) using Sieve of Eratosthenes
+vector<int> spf;
+void sieve(int n){
+    spf = vector<int>(n+1);
+    for (int i = 1; i <= n; i++){
         spf[i] = i;
-    for (ll i = 4; i <= n; i += 2)
-        spf[i] = 2;
+    }
 
-    for (ll i = 3; i * i <= n; i++)
-    {
-        if (spf[i] == i)
-        {
-            for (ll j = i * i; j <= n; j += i)
-                if (spf[j] == j)
-                    spf[j] = i;
+    for (int i = 2; i*i <= n; i++){
+        if (spf[i] == i){
+            for (int j = i*i; j <= n; j += i){
+                if (spf[j] == j) spf[j] = i;
+            }
         }
     }
 }
